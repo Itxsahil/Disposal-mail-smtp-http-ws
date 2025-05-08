@@ -264,7 +264,6 @@ This guide walks you through setting up a **WebSocket (WSS)** and **HTTPS** serv
 
    * **HTTP (80)**
    * **HTTPS (443)**
-   * **Custom TCP (your app port, e.g., 8080)**
 
 ---
 
