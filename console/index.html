@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TempMailGen</title>
+    <style>
+      /* Global Reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(
+          135deg,
+          #1a1a1a,
+          #232323
+        ); /* Black gradient */
+        color: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 20px;
+      }
+
+      #container {
+        width: 100%;
+        max-width: 80vh;
+        background: linear-gradient(
+          135deg,
+          #ffffff,
+          #f2dede
+        ); /* White to rose gradient */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        text-align: center;
+        margin-bottom: 20px;
+        animation: fadeIn 1.5s ease-in-out;
+        color: #1a1a1a; /* Black text */
+      }
+
+      button {
+        background: linear-gradient(
+          135deg,
+          #008cba,
+          #5b9bd5
+        ); /* Blue gradient */
+        color: #ffffff;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 25px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: bold;
+        margin: 10px 0;
+        transition: transform 0.3s ease, background-color 0.3s ease;
+      }
+
+      button:hover {
+        transform: scale(1.1);
+        background: linear-gradient(
+          135deg,
+          #f2dede,
+          #ffffff
+        ); /* Rose to white gradient */
+        color: #1a1a1a; /* Black text on hover */
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 2px solid #008cba; /* Blue border */
+        border-radius: 25px;
+        font-size: 16px;
+        outline: none;
+        transition: border-color 0.3s ease;
+      }
+
+      input:focus {
+        border-color: #f2dede; /* Rose focus border */
+      }
+
+      #emails {
+        margin-top: 20px;
+        padding: 10px;
+        border: 1px solid #5b9bd5; /* Light blue border */
+        border-radius: 8px;
+        background: #1a1a1a; /* Black background */
+        animation: slideIn 1.2s ease-in-out;
+        color: #ffffff;
+      }
+
+      .email-item {
+        padding: 10px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid #333; /* Subtle black border */
+        background: #232323; /* Dark grey background */
+        border-radius: 4px;
+        word-wrap: break-word;
+        animation: fadeIn 0.8s ease-in-out;
+      }
+
+      .email-item:last-child {
+        border-bottom: none;
+      }
+
+      /* Animations */
+      @keyframes fadeIn {
+        0% {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slideIn {
+        0% {
+          opacity: 0;
+          transform: translateX(-100px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+
+      @keyframes scaleUp {
+        0% {
+          opacity: 0;
+          transform: scale(0.8);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .cards-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        justify-content: center;
+        margin-top: 20px;
+      }
+
+      /* Individual card styling */
+      .card {
+        background: linear-gradient(
+          135deg,
+          #ffffff,
+          #f2dede
+        ); /* White to rose gradient */
+        width: 22%; /* Make each card a fraction of the container */
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+        color: #1a1a1a; /* Black text */
+        text-align: center;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      /* Card hover effect */
+      .card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 12px 20px rgba(0, 0, 0, 0.4);
+      }
+
+      /* Title styling inside each card */
+      .card h3 {
+        font-size: 24px;
+        margin-bottom: 10px;
+      }
+
+      /* Paragraph inside cards */
+      .card p {
+        font-size: 16px;
+        line-height: 1.6;
+      }
+
+      /* Responsive Design: Stack cards on small screens */
+      @media screen and (max-width: 768px) {
+        .card {
+          width: 48%; /* Adjust to 2 cards per row on medium screens */
+        }
+      }
+
+      @media screen and (max-width: 480px) {
+        .card {
+          width: 100%; /* Full-width cards on small screens */
+        }
+      }
+
+      .accordion {
+        width: 100%;
+        max-width: 800px;
+        margin: 20px auto;
+        background: #1a1a1a;
+        border-radius: 8px;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      .accordion-item {
+        border-bottom: 1px solid #333;
+      }
+
+      .accordion-header {
+        background: #008cba;
+        color: #fff;
+        text-align: left;
+        padding: 15px;
+        font-size: 18px;
+        width: 100%;
+        border: none;
+        cursor: pointer;
+        outline: none;
+        transition: background-color 0.3s ease;
+      }
+
+      .accordion-header:hover {
+        background-color: #5b9bd5;
+      }
+
+      .accordion-content {
+        padding: 0 15px 15px;
+        display: none;
+        background: #232323;
+        color: #fff;
+      }
+
+      .accordion-content p {
+        font-size: 16px;
+        line-height: 1.8;
+      }
+
+      /* Expand content when active */
+      .accordion-item.active .accordion-content {
+        display: block;
+      }
+      .why-use-tempMailGen {
+        background-color: #fef2f2; /* Light rose background */
+        border-radius: 8px;
+        padding: 20px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        margin: 30px auto;
+        font-family: "Arial", sans-serif;
+      }
+
+      .why-use-tempMailGen h2 {
+        color: #d14e71; /* Rose color */
+        font-size: 24px;
+        margin-bottom: 10px;
+        font-weight: 600;
+      }
+
+      .why-use-tempMailGen p {
+        color: #333;
+        font-size: 16px;
+        line-height: 1.8;
+        margin-bottom: 20px;
+      }
+
+      .why-use-tempMailGen ul {
+        list-style: none;
+        padding-left: 0;
+      }
+
+      .why-use-tempMailGen ul li {
+        font-size: 16px;
+        color: #555;
+        margin-bottom: 8px;
+        padding-left: 20px;
+        position: relative;
+      }
+
+      .why-use-tempMailGen ul li::before {
+        content: "✔";
+        position: absolute;
+        left: 0;
+        color: #d14e71; /* Rose color for checkmarks */
+        font-size: 18px;
+        top: 0;
+      }
+
+      /* Add a subtle hover effect for each list item */
+      .why-use-tempMailGen ul li:hover {
+        color: #d14e71;
+        transition: color 0.3s ease;
+      }
+
+      h2{
+        display: flex;
+        justify-content: center;
+        margin-top: 2px;
+        padding-top: 2px;
+      }
+
+      .footer {
+    /* background-color: #f3f4f6; Light background for footer */
+    text-align: center;
+    padding: 20px;
+    /* position: fixed; */
+    bottom: 0;
+    width: 100%;
+    font-family: 'Arial', sans-serif;
+  }
+
+  .footer p {
+    color: #6b7280; /* Dark gray text */
+    font-size: 14px;
+  }
+
+  .footer strong {
+    color: #d14e71; /* Rose color for name */
+  }
+
+    </style>
+  </head>
+
+  <body>
+    <div id="container">
+      <button onclick="generate()">Generate</button>
+      <input id="email" placeholder="Email" readonly />
+      <button onclick="copy()">Copy</button>
+      <div id="emails"></div>
+    </div>
+
+    <!-- How It Works Section -->
+    <section>
+      <h2>How It Works</h2>
+      <div class="cards-container">
+        <div class="card">
+          <h3>Step 1: Generate</h3>
+          <p>
+            Click the "Generate" button to create a new temporary email address.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Step 2: Copy</h3>
+          <p>Copy the generated email address using the "Copy" button.</p>
+        </div>
+        <div class="card">
+          <h3>Step 3: Use</h3>
+          <p>
+            Use the email address for signups, subscriptions, or testing
+            purposes.
+          </p>
+        </div>
+        <div class="card">
+          <h3>Step 4: View</h3>
+          <p>
+            View incoming emails directly on this page in the "Emails" section.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Frequently Asked Questions -->
+    <section>
+      <h2>Frequently Asked Questions</h2>
+
+      <div class="accordion">
+        <div class="accordion-item">
+          <button class="accordion-header">What is a temporary email?</button>
+          <div class="accordion-content">
+            <p>
+              A temporary email is a disposable email address that can be used
+              for a short period to receive emails and is automatically
+              discarded after its purpose is served.
+            </p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-header">Is this service free?</button>
+          <div class="accordion-content">
+            <p>Yes, TempMailGen is completely free to use!</p>
+          </div>
+        </div>
+
+        <div class="accordion-item">
+          <button class="accordion-header">
+            Can I send emails from a temporary address?
+          </button>
+          <div class="accordion-content">
+            <p>
+              No, TempMailGen only supports receiving emails. It is designed for
+              users who need a quick way to receive messages without using their
+              primary email address.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Why Use TempMailGen -->
+    <section class="why-use-tempMailGen">
+      <h2>Why Use TempMailGen?</h2>
+      <p>
+        Using TempMailGen ensures your primary email stays private and protected
+        from spam. Whether you're signing up for a newsletter or testing app
+        functionalities, a temporary email helps:
+      </p>
+      <ul>
+        <li>Protect your inbox from spam and promotional emails.</li>
+        <li>Maintain your privacy when dealing with untrusted websites.</li>
+        <li>Quickly test email functionality during development.</li>
+      </ul>
+    </section>
+
+  
+    <footer class="footer">
+      <p>&copy; 2025 Built by <strong>Sahil Khan</strong></p>
+    </footer>
+
+    <script>
+      let ws;
+      let email = null;
+      if (email !== null || email !== undefined) {
+        document.getElementById("email").value = email;
+      }
+      function copy() {
+        var copyText = document.getElementById("email");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999);
+        document.execCommand("copy");
+      }
+
+      // Connect to WebSocket server as soon as the page loads
+      window.onload = () => {
+        ws = new WebSocket("wss://d-mail.sahilkhan.site");
+
+        ws.onopen = () => {
+          console.log("Connected to WebSocket server");
+        };
+
+        ws.onmessage = (message) => {
+          const response = JSON.parse(message.data);
+
+          if (response.method === "generated:mail") {
+            document.getElementById("email").value = response.email;
+            email = response.email;
+          }
+          if (response.method === "send:mail") {
+            // console.log(response.data)
+            let { from , data, html } = response.data;
+            const emailContainer = document.getElementById("emails");
+            const emailDiv = document.createElement("div");
+            emailDiv.className = "email-item";
+            emailDiv.innerHTML = html;
+            emailContainer.appendChild(emailDiv);
+          }
+        };
+
+        ws.onclose = () => {
+          console.log("Disconnected from WebSocket server");
+        };
+      };
+
+      function generate() {
+        // Send message to WebSocket server requesting new email
+        if (ws.readyState === WebSocket.OPEN) {
+          ws.send(JSON.stringify({ method: "generate:mail" }));
+        } else {
+          console.log("WebSocket connection is not open.");
+        }
+      }
+    </script>
+
+    <script>
+      // Get all accordion headers
+      const accordionHeaders = document.querySelectorAll(".accordion-header");
+
+      accordionHeaders.forEach((header) => {
+        header.addEventListener("click", function () {
+          // Toggle the active class for the clicked accordion item
+          const item = this.parentElement;
+          item.classList.toggle("active");
+        });
+      });
+    </script>
+  </body>
+</html>
